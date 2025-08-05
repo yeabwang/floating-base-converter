@@ -1,6 +1,6 @@
 import re
 import math
-from typing import Union, Tuple
+from typing import Union, Tuple, Optional
 from .utils import validate_input, normalize_input, ConversionError
 
 
@@ -97,7 +97,7 @@ class BaseConverter:
         return ''.join(result)
     
     def _convert_base(self, number: Union[str, float], from_base: int, 
-                     to_base: int, precision: int = None) -> str:
+                     to_base: int, precision: Optional[int] = None) -> str:
         """General base conversion method."""
         if precision is None:
             precision = self.default_precision
@@ -133,60 +133,60 @@ class BaseConverter:
         return result
     
     # Decimal conversions
-    def decimal_to_binary(self, number: Union[str, float], precision: int = None) -> str:
+    def decimal_to_binary(self, number: Union[str, float], precision: Optional[int] = None) -> str:
         """Convert decimal to binary."""
         return self._convert_base(number, 10, 2, precision)
     
-    def decimal_to_octal(self, number: Union[str, float], precision: int = None) -> str:
+    def decimal_to_octal(self, number: Union[str, float], precision: Optional[int] = None) -> str:
         """Convert decimal to octal."""
         return self._convert_base(number, 10, 8, precision)
     
-    def decimal_to_hex(self, number: Union[str, float], precision: int = None) -> str:
+    def decimal_to_hex(self, number: Union[str, float], precision: Optional[int] = None) -> str:
         """Convert decimal to hexadecimal."""
         return self._convert_base(number, 10, 16, precision)
     
     # Binary conversions
-    def binary_to_decimal(self, number: Union[str, int], precision: int = None) -> str:
+    def binary_to_decimal(self, number: Union[str, int], precision: Optional[int] = None) -> str:
         """Convert binary to decimal."""
         return self._convert_base(number, 2, 10, precision)
     
-    def binary_to_octal(self, number: Union[str, int], precision: int = None) -> str:
+    def binary_to_octal(self, number: Union[str, int], precision: Optional[int] = None) -> str:
         """Convert binary to octal."""
         return self._convert_base(number, 2, 8, precision)
     
-    def binary_to_hex(self, number: Union[str, int], precision: int = None) -> str:
+    def binary_to_hex(self, number: Union[str, int], precision: Optional[int] = None) -> str:
         """Convert binary to hexadecimal."""
         return self._convert_base(number, 2, 16, precision)
     
     # Octal conversions
-    def octal_to_decimal(self, number: Union[str, int], precision: int = None) -> str:
+    def octal_to_decimal(self, number: Union[str, int], precision: Optional[int] = None) -> str:
         """Convert octal to decimal."""
         return self._convert_base(number, 8, 10, precision)
     
-    def octal_to_binary(self, number: Union[str, int], precision: int = None) -> str:
+    def octal_to_binary(self, number: Union[str, int], precision: Optional[int] = None) -> str:
         """Convert octal to binary."""
         return self._convert_base(number, 8, 2, precision)
     
-    def octal_to_hex(self, number: Union[str, int], precision: int = None) -> str:
+    def octal_to_hex(self, number: Union[str, int], precision: Optional[int] = None) -> str:
         """Convert octal to hexadecimal."""
         return self._convert_base(number, 8, 16, precision)
     
     # Hexadecimal conversions
-    def hex_to_decimal(self, number: Union[str, int], precision: int = None) -> str:
+    def hex_to_decimal(self, number: Union[str, int], precision: Optional[int] = None) -> str:
         """Convert hexadecimal to decimal."""
         return self._convert_base(number, 16, 10, precision)
     
-    def hex_to_binary(self, number: Union[str, int], precision: int = None) -> str:
+    def hex_to_binary(self, number: Union[str, int], precision: Optional[int] = None) -> str:
         """Convert hexadecimal to binary."""
         return self._convert_base(number, 16, 2, precision)
     
-    def hex_to_octal(self, number: Union[str, int], precision: int = None) -> str:
+    def hex_to_octal(self, number: Union[str, int], precision: Optional[int] = None) -> str:
         """Convert hexadecimal to octal."""
         return self._convert_base(number, 16, 8, precision)
     
     # Universal converter
     def convert(self, number: Union[str, float], from_base: int, 
-                to_base: int, precision: int = None) -> str:
+                to_base: int, precision: Optional[int] = None) -> str:
         """
         Universal conversion method.
         
