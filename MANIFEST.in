@@ -1,8 +1,8 @@
 include README.md
 include LICENSE
-include requirements*.txt
+include CHANGELOG.md
 recursive-include tests *.py
 recursive-include base_converter *.py
 global-exclude *.pyc
-global-exclude pycache
+global-exclude __pycache__
 global-exclude .DS_Store

@@ -39,27 +39,89 @@ print(converter.octal_to_decimal("17.4"))       # "15.5"
 print(converter.convert("FF", from_base=16, to_base=2))  # "11111111"
 ```
 
-## CLI usage
+## Default usage
+
+### BaseConverter Class
+
+#### Constructor
+```python
+BaseConverter(default_precision=10)
+```
+
+`default_precision` (int): Default precision for fractional conversions (1-50)
+
+#### Methods
+
+**Decimal Conversions:**
+- `decimal_to_binary(number, precision=None)`
+- `decimal_to_octal(number, precision=None)`
+- `decimal_to_hex(number, precision=None)`
+
+**Binary Conversions:**
+- `binary_to_decimal(number, precision=None)`
+- `binary_to_octal(number, precision=None)`
+- `binary_to_hex(number, precision=None)`
+
+**Octal Conversions:**
+- `octal_to_decimal(number, precision=None)`
+- `octal_to_binary(number, precision=None)`
+- `octal_to_hex(number, precision=None)`
+
+**Hexadecimal Conversions:**
+- `hex_to_decimal(number, precision=None)`
+- `hex_to_binary(number, precision=None)`
+- `hex_to_octal(number, precision=None)`
+
+**Universal Converter:**
+- `convert(number, from_base, to_base, precision=None)`
+
+## Command Line Usage
+
 ```bash
 # Convert decimal to binary
-base-converter 3.14159 --from-base 10 --to-base 2 --precision 8
+python -m base_converter 3.14159 --from-base 10 --to-base 2 --precision 8
 
 # Convert hex to decimal
-base-converter "FF.8" --from-base 16 --to-base 10
+python -m base_converter "FF.8" --from-base 16 --to-base 10
 
 # Convert binary to octal
-base-converter "1010.01" --from-base 2 --to-base 8
+python -m base_converter "1010.01" --from-base 2 --to-base 8
+```
+
+## Input Formats
+
+The package accepts various input formats:
+
+- **Decimal**: `3.14159`, `"3.14159"`
+- **Binary**: `"1010.01"`, `"0b1010.01"`
+- **Octal**: `"17.4"`, `"0o17.4"`
+- **Hexadecimal**: `"FF.8"`, `"0xFF.8"`
+
+## Error Handling
+
+The package includes comprehensive error handling:
+
+```python
+from base_converter import ConversionError
+
+try:
+    result = converter.binary_to_decimal("102")  # Invalid binary
+except ConversionError as e:
+    print(f"Conversion error: {e}")
 ```
 
 ## Development
-If you think of something not implemneted and if you want to contribute checkout the CONTRIBUTING.md for development setup and guidelines.
 
-## License
-MIT License - see LICENSE file for details.
+### Running Tests
 
-## Setup
-`requirements.txt`
-## No runtime dependencies required
- `requirements-dev.txt`
+```bash
+pip install -e ".[dev]"
+pytest tests/
+```
 
- If you find a small value in this please follow and drop a star :)
+### Code Formatting
+
+```bash
+black base_converter/
+flake8 base_converter/
+```
