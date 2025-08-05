@@ -61,3 +61,5 @@ MIT License - see LICENSE file for details.
 `requirements.txt`
 ## No runtime dependencies required
  `requirements-dev.txt`
+
+ If you find a small value in this please follow and drop a star :)
