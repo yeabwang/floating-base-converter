@@ -20,7 +20,7 @@ class TestUtils:
             normalize_input(10, 2)  # Numeric input for non-decimal base
         
         with pytest.raises(ConversionError):
-            normalize_input([], 10)  # Invalid type
+            normalize_input([], 10)  # type: ignore # Invalid type
     
     def test_validate_input(self):
         """Test input validation."""
