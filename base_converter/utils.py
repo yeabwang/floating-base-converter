@@ -1,6 +1,10 @@
 import re
 from typing import Union
-from .converter import ConversionError
+
+
+class ConversionError(Exception):
+    """Custom exception for base conversion errors."""
+    pass
 
 
 def normalize_input(number: Union[str, float, int], base: int) -> str:

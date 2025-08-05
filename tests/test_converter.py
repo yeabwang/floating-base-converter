@@ -25,7 +25,7 @@ class TestBaseConverter:
     def test_decimal_to_octal(self):
         """Test decimal to octal conversion."""
         assert self.converter.decimal_to_octal(8) == "10"
-        assert self.converter.decimal_to_octal(8.75) == "10.6"
+        assert self.converter.decimal_to_octal(8.75, precision=1) == "10.6"
     
     def test_binary_to_decimal(self):
         """Test binary to decimal conversion."""

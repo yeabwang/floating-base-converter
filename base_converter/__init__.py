@@ -11,8 +11,8 @@ Example:
     >>> print(result)  # "3.243F6A"
 """
 
-from .converter import BaseConverter, ConversionError
-from .utils import validate_input, normalize_input
+from .converter import BaseConverter
+from .utils import validate_input, normalize_input, ConversionError
 
 __version__ = "1.0.0"
 __author__ = "Yeabwang"

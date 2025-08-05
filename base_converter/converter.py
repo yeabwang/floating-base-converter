@@ -1,12 +1,7 @@
 import re
 import math
 from typing import Union, Tuple
-from .utils import validate_input, normalize_input
-
-
-class ConversionError(Exception):
-    """Custom exception for base conversion errors."""
-    pass
+from .utils import validate_input, normalize_input, ConversionError
 
 
 class BaseConverter:

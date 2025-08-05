@@ -52,6 +52,3 @@ class TestUtils:
         
         with pytest.raises(ConversionError):
             validate_input(".", 10)  # Just decimal point
-        
-        with pytest.raises(ConversionError):
-            validate_input("5.", 10)  # Trailing decimal (this should actually be valid)
