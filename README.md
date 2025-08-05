@@ -125,3 +125,5 @@ pytest tests/
 black base_converter/
 flake8 base_converter/
 ```
+
+If you like the project feel free to drop a star and follow :)
