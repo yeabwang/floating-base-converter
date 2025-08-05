@@ -11,7 +11,7 @@ setup(
     description="A Python package for converting floating-point numbers between different bases",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/floating-base-converter",
+    url="https://github.com/yeabwang/floating-base-converter",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
