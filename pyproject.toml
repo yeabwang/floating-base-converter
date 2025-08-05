@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "floating-base-converter"
-version = "0.1.0"
-description = "A Python package for converting floating-point numbers between different bases"
+version = "1.0.0"
+description = "A high-precision Python package for converting floating-point numbers between different bases with scientific notation support"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [

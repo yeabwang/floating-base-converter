@@ -1,10 +1,44 @@
 from typing import Union
+from decimal import Decimal
 
 
 class ConversionError(Exception):
     """Custom exception for base conversion errors."""
 
     pass
+
+
+def convert_scientific_notation(number_str: str) -> str:
+    """
+    Convert scientific notation to standard decimal format.
+    
+    Args:
+        number_str: Number string that may contain scientific notation
+        
+    Returns:
+        str: Standard decimal format
+        
+    Examples:
+        "1.23e-4" -> "0.000123"
+        "6.626e-34" -> "0.00000000000000000000000000000000006626"
+        "1.23e+5" -> "123000"
+    """
+    # Check if it contains scientific notation
+    if 'e' not in number_str.lower():
+        return number_str
+    
+    try:
+        # Use Decimal for arbitrary precision scientific notation conversion
+        decimal_value = Decimal(number_str)
+        # Convert to string without scientific notation
+        return format(decimal_value, 'f')
+    except Exception:
+        # If Decimal fails, fall back to float (less precise but compatible)
+        try:
+            float_value = float(number_str)
+            return f"{float_value:.50f}".rstrip('0').rstrip('.')
+        except ValueError:
+            raise ConversionError(f"Invalid scientific notation: {number_str}")
 
 
 def normalize_input(number: Union[str, float, int], base: int) -> str:
@@ -29,6 +63,11 @@ def normalize_input(number: Union[str, float, int], base: int) -> str:
     if isinstance(number, str):
         # Remove common prefixes
         number = number.strip()
+        
+        # Handle scientific notation for decimal base
+        if base == 10 and ('e' in number.lower() or 'E' in number):
+            number = convert_scientific_notation(number)
+        
         if base == 2 and number.lower().startswith("0b"):
             number = number[2:]
         elif base == 8 and number.lower().startswith("0o"):
