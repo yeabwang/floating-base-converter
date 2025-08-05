@@ -408,5 +408,4 @@ All benchmarks were conducted with:
 - **Memory**: Measured using tracemalloc
 - **Timing**: High-resolution performance counters
 
-Benchmark results are reproducible and represent typical performance
-on modern hardware.
+Benchmark results are reproducible and represent typical performance on modern hardware.
