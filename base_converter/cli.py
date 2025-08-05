@@ -3,7 +3,7 @@ import sys
 from .converter import BaseConverter, ConversionError
 
 
-def main():
+def main() -> None:
     """Command-line interface for the base converter."""
     parser = argparse.ArgumentParser(
         description="Convert floating-point numbers between different bases",

@@ -19,14 +19,16 @@ class BaseConverter:
             default_precision (int): Default precision for fractional part conversion.
                                    Must be between 1 and 100.
         """
-        if not isinstance(default_precision, int) or not (1 <= default_precision <= 100):
+        if not isinstance(default_precision, int) or not (
+            1 <= default_precision <= 100
+        ):
             raise ConversionError(
                 "Default precision must be an integer between 1 and 100"
             )
 
         self.default_precision = default_precision
         self.hex_digits = "0123456789ABCDEF"
-        
+
         # Set decimal precision high enough for calculations
         getcontext().prec = max(default_precision + 20, 50)
 
@@ -70,12 +72,12 @@ class BaseConverter:
         # Set decimal precision high enough for calculations
         original_prec = getcontext().prec
         getcontext().prec = max(precision + 50, 100)
-        
+
         try:
             # Convert fractional part to decimal using Decimal for arbitrary precision
             decimal_fraction = Decimal(0)
             base_decimal = Decimal(from_base)
-            
+
             for i, digit in enumerate(fractional_str):
                 if digit.upper() in self.hex_digits:
                     digit_value = self.hex_digits.index(digit.upper())
@@ -84,19 +86,25 @@ class BaseConverter:
                             f"Invalid digit '{digit}' for base {from_base}"
                         )
                     # Use Decimal arithmetic for precision
-                    decimal_fraction += Decimal(digit_value) * (base_decimal ** -(i + 1))
+                    decimal_fraction += Decimal(digit_value) * (
+                        base_decimal ** -(i + 1)
+                    )
                 else:
                     raise ConversionError(f"Invalid digit '{digit}'")
 
             if to_base == 10:
                 # For decimal, format with appropriate precision
-                result = str(decimal_fraction).split(".")[1] if "." in str(decimal_fraction) else "0"
+                result_str = (
+                    str(decimal_fraction).split(".")[1]
+                    if "." in str(decimal_fraction)
+                    else "0"
+                )
                 # Limit to requested precision
-                result = result[:precision].rstrip("0")
-                return result if result else "0"
+                result_str = result_str[:precision].rstrip("0")
+                return result_str if result_str else "0"
 
             # Convert decimal fraction to target base using Decimal arithmetic
-            result = []
+            result_list = []
             current_fraction = decimal_fraction
             to_base_decimal = Decimal(to_base)
 
@@ -105,17 +113,17 @@ class BaseConverter:
                     break
 
                 current_fraction *= to_base_decimal
-                digit = int(current_fraction)
+                result_digit: int = int(current_fraction)
 
                 if to_base == 16:
-                    result.append(self.hex_digits[digit])
+                    result_list.append(self.hex_digits[result_digit])
                 else:
-                    result.append(str(digit))
+                    result_list.append(str(result_digit))
 
-                current_fraction -= digit
+                current_fraction -= Decimal(result_digit)
 
-            return "".join(result)
-            
+            return "".join(result_list)
+
         finally:
             # Restore original precision
             getcontext().prec = original_prec
@@ -137,7 +145,7 @@ class BaseConverter:
         # Set decimal precision high enough for calculations
         original_prec = getcontext().prec
         getcontext().prec = max(precision + 20, 50)
-        
+
         try:
             # Normalize and validate input
             number_str = normalize_input(number, from_base)
@@ -152,7 +160,9 @@ class BaseConverter:
             integer_part, fractional_part = self._split_number(number_str, from_base)
 
             # Convert parts
-            converted_integer = self._convert_integer_part(integer_part, from_base, to_base)
+            converted_integer = self._convert_integer_part(
+                integer_part, from_base, to_base
+            )
             converted_fractional = self._convert_fractional_part(
                 fractional_part, from_base, to_base, precision
             )
@@ -167,7 +177,7 @@ class BaseConverter:
                 result = f"-{result}"
 
             return result
-        
+
         finally:
             # Restore original precision
             getcontext().prec = original_prec

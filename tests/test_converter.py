@@ -121,16 +121,18 @@ class TestBaseConverter:
         """Test high precision conversions (51-100 digits)."""
         # Test with 60 digits precision
         pi_60_digits = "3.141592653589793238462643383279502884197169399375105820974944"
-        
+
         # Convert to hex with 60 digits precision
         hex_result = self.converter.decimal_to_hex(pi_60_digits, precision=60)
-        assert len(hex_result.split('.')[1]) <= 60
-        assert hex_result.startswith("3.243F6A8885A308D313198A2E03707344A4093822299F31D0")
-        
+        assert len(hex_result.split(".")[1]) <= 60
+        assert hex_result.startswith(
+            "3.243F6A8885A308D313198A2E03707344A4093822299F31D0"
+        )
+
         # Test with 80 digits precision
         binary_result = self.converter.decimal_to_binary("1.5", precision=80)
         assert binary_result == "1.1"  # Simple test that still works
-        
+
         # Test that precision=100 works
         octal_result = self.converter.decimal_to_octal("0.125", precision=100)
         assert octal_result == "0.1"
@@ -139,12 +141,12 @@ class TestBaseConverter:
         """Test that decimal arithmetic provides better accuracy than float."""
         # Test a number that requires high precision
         test_number = "1.23456789012345678901234567890123456789012345678901234567890"
-        
+
         # Convert with high precision
         hex_result = self.converter.decimal_to_hex(test_number, precision=70)
-        
+
         # Should maintain precision better than float-based approach
-        assert len(hex_result.split('.')[1]) > 50  # More than old limit
+        assert len(hex_result.split(".")[1]) > 50  # More than old limit
         assert hex_result.startswith("1.3C0CA428C59FB71A7B")  # Verify accuracy
 
     def test_scientific_notation_support(self):
@@ -153,22 +155,22 @@ class TestBaseConverter:
         result = self.converter.decimal_to_hex("1.23e-4", precision=10)
         expected = self.converter.decimal_to_hex("0.000123", precision=10)
         assert result == expected
-        
+
         # Large exponents
         result = self.converter.decimal_to_binary("1e3")
         expected = self.converter.decimal_to_binary("1000")
         assert result == expected
-        
+
         # Negative exponents with high precision
         result = self.converter.decimal_to_hex("6.626e-34", precision=50)
         assert result.startswith("0.")
-        assert len(result.split('.')[1]) > 30  # Should have many fractional digits
-        
+        assert len(result.split(".")[1]) > 30  # Should have many fractional digits
+
         # Positive exponents
         result = self.converter.decimal_to_octal("1.23e2", precision=5)
         expected = self.converter.decimal_to_octal("123", precision=5)
         assert result == expected
-        
+
         # Case insensitive
         result1 = self.converter.decimal_to_hex("1.5e-3", precision=10)
         result2 = self.converter.decimal_to_hex("1.5E-3", precision=10)
@@ -180,12 +182,12 @@ class TestBaseConverter:
         result = self.converter.decimal_to_hex("1.5e0")
         expected = self.converter.decimal_to_hex("1.5")
         assert result == expected
-        
+
         # Very small numbers
         result = self.converter.decimal_to_binary("1e-10", precision=40)
         assert result.startswith("0.")
-        
-        # Very large numbers  
+
+        # Very large numbers
         result = self.converter.decimal_to_hex("1e10")
         assert result == "2540BE400"  # 10 billion in hex
 
@@ -194,6 +196,6 @@ class TestBaseConverter:
         # Scientific notation should only work for decimal base
         with pytest.raises(ConversionError):
             self.converter.binary_to_decimal("1.23e-4")  # 'e' invalid in binary
-            
+
         with pytest.raises(ConversionError):
             self.converter.convert("1e5", 2, 10)  # 'e' invalid in binary source
