@@ -9,7 +9,7 @@ import time
 
 def demo_precision_upgrade():
     """Demonstrate the precision upgrade from 50 to 100 digits."""
-    print("🚀 Enhanced Precision Demo: 50 → 100 Digits")
+    print("Enhanced Precision Demo: 50 → 100 Digits")
     print("=" * 60)
     
     converter = BaseConverter()
