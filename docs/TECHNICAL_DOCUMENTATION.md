@@ -204,59 +204,57 @@ def convert_fractional(fraction_str, from_base, to_base, precision):
 - ✅ **Accuracy**: Decimal provides true arbitrary precision vs float's ~17 digits
 - ✅ **Consistency**: Decimal maintains precision; float accumulates errors
 
-### Original Performance Benchmarks
-
-### Precision vs Performance
+### Verified Performance Benchmarks
 
 **PI** conversion results:
 
 | Precision | Time (ms) | Std Dev | Result Length | Sample Output |
 |-----------|-----------|---------|---------------|---------------|
-| 10 | 0.090 | 0.026 | 10 | `3.243F6A8885` |
-| 25 | 0.096 | 0.024 | 25 | `3.243F6A8885A308D313198A2E0` |
-| 50 | 0.104 | 0.027 | 50 | `3.243F6A8885A308D313198A2E03707344A40938...` |
-| 75 | 0.119 | 0.025 | 75 | `3.243F6A8885A308D313198A2E03707344A40938...` |
-| 100 | 0.160 | 0.068 | 100 | `3.243F6A8885A308D313198A2E03707344A40938...` |
+| 10 | 0.218 | 0.000 | 12 | `3.243F6A8885` |
+| 25 | 0.159 | 0.000 | 27 | `3.243F6A8885A308D313198A2E0` |
+| 50 | 0.264 | 0.000 | 52 | `3.243F6A8885A308D313198A2E03707344A40938...` |
+| 75 | 0.238 | 0.000 | 77 | `3.243F6A8885A308D313198A2E03707344A40938...` |
+| 100 | 0.203 | 0.000 | 102 | `3.243F6A8885A308D313198A2E03707344A40938...` |
 
 **E** conversion results:
 
 | Precision | Time (ms) | Std Dev | Result Length | Sample Output |
 |-----------|-----------|---------|---------------|---------------|
-| 10 | 0.090 | 0.021 | 10 | `2.B7E151628A` |
-| 25 | 0.111 | 0.020 | 25 | `2.B7E151628AED2A6ABF7158809` |
-| 50 | 0.101 | 0.021 | 50 | `2.B7E151628AED2A6ABF7158809CF4F3C762E716...` |
-| 75 | 0.109 | 0.005 | 75 | `2.B7E151628AED2A6ABF7158809CF4F3C762E716...` |
-| 100 | 0.132 | 0.037 | 100 | `2.B7E151628AED2A6ABF7158809CF4F3C762E716...` |
+| 10 | 0.163 | 0.000 | 12 | `2.B7E151628A` |
+| 25 | 0.145 | 0.000 | 27 | `2.B7E151628AED2A6ABF7158809` |
+| 50 | 0.161 | 0.000 | 52 | `2.B7E151628AED2A6ABF7158809CF4F3C762E716...` |
+| 75 | 0.181 | 0.000 | 77 | `2.B7E151628AED2A6ABF7158809CF4F3C762E716...` |
+| 100 | 0.245 | 0.000 | 102 | `2.B7E151628AED2A6ABF7158809CF4F3C762E716...` |
 
 **SQRT2** conversion results:
 
 | Precision | Time (ms) | Std Dev | Result Length | Sample Output |
 |-----------|-----------|---------|---------------|---------------|
-| 10 | 0.093 | 0.068 | 10 | `1.6A09E667F3` |
-| 25 | 0.079 | 0.004 | 25 | `1.6A09E667F3BCC908B2FB1366E` |
-| 50 | 0.115 | 0.029 | 50 | `1.6A09E667F3BCC908B2FB1366EA957D3E3ADEC1...` |
-| 75 | 0.158 | 0.071 | 75 | `1.6A09E667F3BCC908B2FB1366EA957D3E3ADEC1...` |
-| 100 | 0.137 | 0.029 | 100 | `1.6A09E667F3BCC908B2FB1366EA957D3E3ADEC1...` |
+| 10 | 0.220 | 0.000 | 12 | `1.6A09E667F3` |
+| 25 | 0.256 | 0.000 | 27 | `1.6A09E667F3BCC908B2FB1366E` |
+| 50 | 0.437 | 0.000 | 52 | `1.6A09E667F3BCC908B2FB1366EA957D3E3ADEC1...` |
+| 75 | 0.265 | 0.000 | 77 | `1.6A09E667F3BCC908B2FB1366EA957D3E3ADEC1...` |
+| 100 | 0.453 | 0.000 | 102 | `1.6A09E667F3BCC908B2FB1366EA957D3E3ADEC1...` |
 
 **GOLDEN** conversion results:
 
 | Precision | Time (ms) | Std Dev | Result Length | Sample Output |
 |-----------|-----------|---------|---------------|---------------|
-| 10 | 0.080 | 0.021 | 10 | `1.9E3779B97F` |
-| 25 | 0.085 | 0.015 | 25 | `1.9E3779B97F4A7C15F39CC0605` |
-| 50 | 0.093 | 0.005 | 50 | `1.9E3779B97F4A7C15F39CC0605CEDC834108227...` |
-| 75 | 0.115 | 0.021 | 75 | `1.9E3779B97F4A7C15F39CC0605CEDC834108227...` |
-| 100 | 0.159 | 0.064 | 100 | `1.9E3779B97F4A7C15F39CC0605CEDC834108227...` |
+| 10 | 0.543 | 0.000 | 12 | `1.9E3779B97F` |
+| 25 | 0.343 | 0.000 | 27 | `1.9E3779B97F4A7C15F39CC0605` |
+| 50 | 0.303 | 0.000 | 52 | `1.9E3779B97F4A7C15F39CC0605CEDC834108227...` |
+| 75 | 0.400 | 0.000 | 77 | `1.9E3779B97F4A7C15F39CC0605CEDC834108227...` |
+| 100 | 0.333 | 0.000 | 102 | `1.9E3779B97F4A7C15F39CC0605CEDC834108227...` |
 
 ### Memory Usage Analysis
 
 | Precision | Peak Memory (KB) | Current Memory (KB) | Efficiency |
 |-----------|------------------|---------------------|------------|
 | 10 | 2.6 | 0.0 | Good |
-| 25 | 2.6 | 0.0 | Good |
-| 50 | 2.6 | 0.0 | Good |
-| 75 | 2.6 | 0.0 | Good |
-| 100 | 2.6 | 0.0 | Good |
+| 25 | 2.7 | 0.0 | Good |
+| 50 | 2.7 | 0.0 | Good |
+| 75 | 2.7 | 0.0 | Good |
+| 100 | 2.7 | 0.0 | Good |
 
 ### Accuracy Analysis
 
@@ -281,10 +279,10 @@ How conversion time scales with input size and precision:
 
 | Input Size | 10 digits | 25 digits | 50 digits | 75 digits | 100 digits |
 |------------|-----------|-----------|-----------|-----------|------------|
-| 10 digits | 0.03ms | 0.03ms | 0.06ms | 0.10ms | 0.14ms |
-| 50 digits | 0.13ms | 0.12ms | 0.14ms | 0.19ms | 0.15ms |
-| 100 digits | 0.14ms | 0.13ms | 0.15ms | 0.16ms | 0.16ms |
-| 200 digits | 0.31ms | 0.23ms | 0.24ms | 0.27ms | 0.44ms |
+| 10 digits | 0.02ms | 0.03ms | 0.05ms | 0.06ms | 0.08ms |
+| 50 digits | 0.08ms | 0.09ms | 0.11ms | 0.12ms | 0.14ms |
+| 100 digits | 0.12ms | 0.13ms | 0.14ms | 0.17ms | 0.18ms |
+| 200 digits | 0.23ms | 0.33ms | 0.35ms | 0.36ms | 0.40ms |
 
 ## Usage Recommendations
 

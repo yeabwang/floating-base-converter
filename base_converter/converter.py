@@ -65,7 +65,7 @@ class BaseConverter:
     def _convert_fractional_part(
         self, fractional_str: str, from_base: int, to_base: int, precision: int
     ) -> str:
-        """Convert fractional part between bases using high-precision decimal arithmetic."""
+        """Convert fractional part between bases using high-precision arithmetic."""
         if not fractional_str:
             return ""
 

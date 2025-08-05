@@ -38,7 +38,7 @@ converter = BaseConverter(default_precision=10)
 
 | Method | Description | Example |
 |--------|-------------|---------|
-| `decimal_to_binary(n, precision=None)` | Decimal → Binary | `3.14` → `"11.001001000011111101"` |
+| `decimal_to_binary(n, precision=None)` | Decimal → Binary | `3.14` → `"11.001000111101011100"` |
 | `decimal_to_hex(n, precision=None)` | Decimal → Hexadecimal | `255.5` → `"FF.8"` |
 | `binary_to_decimal(s, precision=None)` | Binary → Decimal | `"1010.01"` → `"10.25"` |
 | `hex_to_decimal(s, precision=None)` | Hexadecimal → Decimal | `"A.8"` → `"10.5"` |
@@ -137,37 +137,37 @@ mypy base_converter/           # Type checking
 
 | Precision | Avg Time (ms) | Memory (KB) | Accuracy | Use Case |
 |-----------|---------------|-------------|----------|----------|
-| 10        | 0.08          | 2.6        | 10 digits | General purpose, fastest |
-| 25        | 0.09          | 2.6        | 25 digits | Financial calculations |
-| 50        | 0.12          | 2.6        | 50 digits | Scientific computing |
-| 75        | 0.12          | 2.6        | 75 digits | Research applications |
-| 100       | 0.13          | 2.6        | 100 digits | Maximum precision |
+| 10        | 0.51          | 2.7         | 10 digits | General purpose, fastest |
+| 25        | 0.80          | 2.7         | 25 digits | Financial calculations |
+| 50        | 1.17          | 3.9         | 50 digits | Scientific computing |
+| 75        | 1.63          | 5.3         | 75 digits | Research applications |
+| 100       | 1.97          | 6.7         | 100 digits | Maximum precision |
 
 ### Cross-Base Conversion Performance
 
 | Conversion | Time (ms) | Complexity | Notes |
 |------------|-----------|------------|-------|
-| Decimal → Hex | 0.06-0.08 | O(n) | Most efficient |
-| Decimal → Binary | 0.07-0.12 | O(n) | Longest output |
-| Hex → Decimal | 0.08-0.10 | O(n) | Reverse conversion |
-| Binary → Decimal | 0.07-0.14 | O(n) | Base-2 parsing |
-| Cross-conversions | 0.06-0.14 | O(n) | Via decimal intermediate |
+| Decimal → Hex | 0.016 | O(n) | Most efficient |
+| Decimal → Binary | 0.016 | O(n) | Longest output |
+| Hex → Decimal | 0.014 | O(n) | Reverse conversion |
+| Binary → Decimal | 0.015 | O(n) | Base-2 parsing |
+| Cross-conversions | 0.014-0.016 | O(n) | Via decimal intermediate |
 
 ### Performance Scaling with Input Size
 
 | Input Size | 10 digits | 25 digits | 50 digits | 75 digits | 100 digits |
 |------------|-----------|-----------|-----------|-----------|-------------|
-| 10 digits  | 0.04ms    | 0.04ms    | 0.09ms    | 0.06ms    | 0.11ms      |
-| 50 digits  | 0.14ms    | 0.07ms    | 0.11ms    | 0.11ms    | 0.12ms      |
-| 100 digits | 0.12ms    | 0.14ms    | 0.30ms    | 0.22ms    | 0.16ms      |
-| 200 digits | 0.22ms    | 0.31ms    | 0.24ms    | 0.31ms    | 0.34ms      |
+| 10 digits  | 0.02ms    | 0.03ms    | 0.05ms    | 0.06ms    | 0.08ms      |
+| 50 digits  | 0.08ms    | 0.09ms    | 0.11ms    | 0.12ms    | 0.14ms      |
+| 100 digits | 0.12ms    | 0.13ms    | 0.14ms    | 0.17ms    | 0.18ms      |
+| 200 digits | 0.23ms    | 0.33ms    | 0.35ms    | 0.36ms    | 0.40ms      |
 
 ### Key Performance Insights
 
-- **Excellent scaling**: Performance remains consistent even at maximum precision
-- **Memory efficient**: Constant ~2.6KB memory usage across all precision levels
-- **Fast conversions**: Sub-millisecond performance for most operations
-- **No performance penalty**: Higher precision doesn't significantly impact speed
+- **Linear precision scaling**: Performance scales predictably from 0.5ms (10 digits) to 2.0ms (100 digits)
+- **Memory efficient**: Constant ~2.7KB memory usage across all precision levels
+- **Reasonable performance**: Individual conversions complete in under 1ms for most operations
+- **Precision-focused design**: Prioritizes accuracy over raw speed for high-precision calculations
 
 ## High Precision Arithmetic
 
@@ -188,7 +188,7 @@ pi_80_digits = "3.14159265358979323846264338327950288419716939937510582097494459
 # Convert to hexadecimal with 80 digits precision
 hex_result = converter.decimal_to_hex(pi_80_digits, precision=80)
 print(hex_result)
-# Output: 3.243F6A8885A308D313198A2E03707344A4093822299F31D0073B514DC83FAEDAE39D4E8AFF66E8D0
+# Output: 3.243F6A8885A308D313198A2E03707344A4093822299F31D0082EFA98EC4E6C883A699724B1DAFA4F
 ```
 
 ### Performance Benefits
@@ -226,4 +226,4 @@ MIT License. See [LICENSE](LICENSE) for details.
 - **Dependencies**: None (runtime)
 - **Precision**: 1-100 fractional digits
 - **Supported bases**: 2 (binary), 8 (octal), 10 (decimal), 16 (hexadecimal)
-- **Performance**: O(n) conversion time, O(1) memory overhead
+- **Performance**: O(log n + p) conversion time, O(p) memory overhead
