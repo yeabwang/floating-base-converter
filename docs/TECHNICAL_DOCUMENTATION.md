@@ -100,7 +100,7 @@ def convert_fractional(fraction_str, from_base, to_base, precision):
 
 **Scientific Notation Conversion**: `O(p)`
 - Same as regular decimal conversion once parsed
-- No additional complexity overhead
+- Overhead of 7.6-25.6% depending on exponent magnitude
 
 #### Cross-Base Conversions
 
@@ -154,8 +154,8 @@ def convert_fractional(fraction_str, from_base, to_base, precision):
 #### Scalability Analysis
 
 **Precision Scaling**: Linear `O(p)`
-- Performance scales linearly with precision from 1-100 digits
-- Memory usage remains constant due to efficient Decimal implementation
+- Performance scales with 2.7x factor from 10 to 100 digits
+- Memory usage scales from 3.0KB to 7.0KB with precision
 
 **Input Size Scaling**: Logarithmic `O(log n)`
 - Integer conversion complexity grows logarithmically with value
@@ -178,83 +178,60 @@ def convert_fractional(fraction_str, from_base, to_base, precision):
 
 ### Verified Benchmark Results (Decimal vs Float)
 
-**Performance Comparison** (Python 3.11.0, 1000 iterations):
+**Performance Comparison** (Python 3.11.0, 50 iterations):
 
-| Precision | Float Time | Decimal Time | Speed Ratio | Winner |
-|-----------|------------|--------------|-------------|---------|
-| 5 digits  | 1.6ms      | 3.2ms        | 0.51x       | Float 2.0x faster |
-| 10 digits | 2.8ms      | 5.9ms        | 0.44x       | Float 2.3x faster |
-| 20 digits | 3.1ms      | 10.5ms       | 0.30x       | Float 3.4x faster |
-| 30 digits | 3.4ms      | 16.1ms       | 0.21x       | Float 4.7x faster |
-| 50 digits | 3.5ms      | 24.3ms       | 0.14x       | Float 7.2x faster |
-
-**Memory Usage Comparison** (100 iterations):
-
-| Precision | Float Memory | Decimal Memory | Memory Ratio | Savings |
-|-----------|--------------|----------------|--------------|---------|
-| 5 digits  | 0.3KB        | 0.7KB         | 0.44x        | 56.4% less |
-| 10 digits | 0.4KB        | 0.7KB         | 0.47x        | 52.9% less |
-| 20 digits | 0.4KB        | 0.8KB         | 0.46x        | 54.3% less |
-| 30 digits | 0.4KB        | 0.9KB         | 0.43x        | 57.1% less |
-| 50 digits | 0.4KB        | 1.0KB         | 0.36x        | 63.3% less |
+| Test Value | Precision | Decimal Time | Float Time | Decimal Advantage |
+|------------|-----------|--------------|------------|-------------------|
+| 3.14159    |        10 |     0.32 ms  |    0.05 ms | Float 0.2x faster |
+| 2.71828    |        20 |     0.44 ms  |    0.10 ms | Float 0.2x faster |
+| 1.41421    |        30 |     0.64 ms  |    0.12 ms | Float 0.2x faster |
+| 0.57721    |        40 |     0.82 ms  |    0.19 ms | Float 0.2x faster |
+| 1.61803    |        50 |     1.06 ms  |    0.18 ms | Float 0.2x faster |
 
 **Key Findings:**
-- ❌ **Speed**: Float is 2-7x faster than decimal (higher precision = bigger gap)
-- ✅ **Memory**: Decimal uses ~57% less memory than float consistently
+- ❌ **Speed**: Float is 5x faster than decimal consistently
+- ✅ **Memory**: Decimal provides efficient memory usage with precision scaling
 - ✅ **Accuracy**: Decimal provides true arbitrary precision vs float's ~17 digits
 - ✅ **Consistency**: Decimal maintains precision; float accumulates errors
 
 ### Verified Performance Benchmarks
 
-**PI** conversion results:
+**Precision Scaling Results** (50 iterations):
 
-| Precision | Time (ms) | Std Dev | Result Length | Sample Output |
-|-----------|-----------|---------|---------------|---------------|
-| 10 | 0.218 | 0.000 | 12 | `3.243F6A8885` |
-| 25 | 0.159 | 0.000 | 27 | `3.243F6A8885A308D313198A2E0` |
-| 50 | 0.264 | 0.000 | 52 | `3.243F6A8885A308D313198A2E03707344A40938...` |
-| 75 | 0.238 | 0.000 | 77 | `3.243F6A8885A308D313198A2E03707344A40938...` |
-| 100 | 0.203 | 0.000 | 102 | `3.243F6A8885A308D313198A2E03707344A40938...` |
+| Precision | Avg Time (ms) | Std Dev | Min Time | Max Time | Memory (KB) |
+|-----------|---------------|---------|----------|----------|-------------|
+| 10 digits |     0.93      |  0.24   |   0.74   |   2.02   |     3.0     |
+| 25 digits |     1.52      |  0.35   |   1.11   |   2.43   |     3.0     |
+| 50 digits |     1.74      |  0.27   |   1.41   |   2.67   |     4.2     |
+| 75 digits |     2.98      |  4.67   |   1.82   |  34.95   |     5.6     |
+| 100 digits |     2.53      |  0.52   |   2.19   |   4.36   |     7.0     |
 
-**E** conversion results:
+**Cross-Base Conversion Benchmark**:
 
-| Precision | Time (ms) | Std Dev | Result Length | Sample Output |
-|-----------|-----------|---------|---------------|---------------|
-| 10 | 0.163 | 0.000 | 12 | `2.B7E151628A` |
-| 25 | 0.145 | 0.000 | 27 | `2.B7E151628AED2A6ABF7158809` |
-| 50 | 0.161 | 0.000 | 52 | `2.B7E151628AED2A6ABF7158809CF4F3C762E716...` |
-| 75 | 0.181 | 0.000 | 77 | `2.B7E151628AED2A6ABF7158809CF4F3C762E716...` |
-| 100 | 0.245 | 0.000 | 102 | `2.B7E151628AED2A6ABF7158809CF4F3C762E716...` |
+| Conversion     | Avg Time (ms) | Std Dev | Memory (KB) | Sample Output    |
+|----------------|---------------|---------|-------------|------------------|
+| Binary         |     0.43      |  0.06   |     3.0     | 1111011.01110100... |
+| Octal          |     0.44      |  0.09   |     3.0     | 173.351700375602... |
+| Hexadecimal    |     0.37      |  0.07   |     3.0     | 7B.74F01FB82C2BD... |
 
-**SQRT2** conversion results:
+**Scientific Notation Overhead**:
 
-| Precision | Time (ms) | Std Dev | Result Length | Sample Output |
-|-----------|-----------|---------|---------------|---------------|
-| 10 | 0.220 | 0.000 | 12 | `1.6A09E667F3` |
-| 25 | 0.256 | 0.000 | 27 | `1.6A09E667F3BCC908B2FB1366E` |
-| 50 | 0.437 | 0.000 | 52 | `1.6A09E667F3BCC908B2FB1366EA957D3E3ADEC1...` |
-| 75 | 0.265 | 0.000 | 77 | `1.6A09E667F3BCC908B2FB1366EA957D3E3ADEC1...` |
-| 100 | 0.453 | 0.000 | 102 | `1.6A09E667F3BCC908B2FB1366EA957D3E3ADEC1...` |
-
-**GOLDEN** conversion results:
-
-| Precision | Time (ms) | Std Dev | Result Length | Sample Output |
-|-----------|-----------|---------|---------------|---------------|
-| 10 | 0.543 | 0.000 | 12 | `1.9E3779B97F` |
-| 25 | 0.343 | 0.000 | 27 | `1.9E3779B97F4A7C15F39CC0605` |
-| 50 | 0.303 | 0.000 | 52 | `1.9E3779B97F4A7C15F39CC0605CEDC834108227...` |
-| 75 | 0.400 | 0.000 | 77 | `1.9E3779B97F4A7C15F39CC0605CEDC834108227...` |
-| 100 | 0.333 | 0.000 | 102 | `1.9E3779B97F4A7C15F39CC0605CEDC834108227...` |
+| Input Type        | Avg Time (ms) | Overhead | Sample Output        |
+|-------------------|---------------|----------|----------------------|
+| Regular notation  |     0.50      | Baseline | 1.3C0CA4283DE1B7EB69... |
+| Scientific (e0)   |     0.54      | +7.6%    | 1.3C0CA4283DE1B7EB69... |
+| Scientific (e+2)  |     0.54      | +8.2%    | 7B.74F01FB82C2BD7F51... |
+| Scientific (e-4)  |     0.63      | +25.6%   | 0.00081742DF088C208F... |
 
 ### Memory Usage Analysis
 
-| Precision | Peak Memory (KB) | Current Memory (KB) | Efficiency |
-|-----------|------------------|---------------------|------------|
-| 10 | 2.6 | 0.0 | Good |
-| 25 | 2.7 | 0.0 | Good |
-| 50 | 2.7 | 0.0 | Good |
-| 75 | 2.7 | 0.0 | Good |
-| 100 | 2.7 | 0.0 | Good |
+| Precision | Peak Memory | Current Memory | Memory/Digit | Efficiency |
+|-----------|-------------|----------------|--------------|------------|
+| 10 digits |     2.7 KB  |       0.3 KB   |    0.271 KB  |   1.00x    |
+| 25 digits |     2.7 KB  |       0.3 KB   |    0.108 KB  |   1.00x    |
+| 50 digits |     3.9 KB  |       0.3 KB   |    0.078 KB  |   1.44x    |
+| 75 digits |     5.3 KB  |       0.3 KB   |    0.071 KB  |   1.96x    |
+| 100 digits |     6.8 KB  |       0.4 KB   |    0.068 KB  |   2.51x    |
 
 ### Accuracy Analysis
 
@@ -275,14 +252,11 @@ Round-trip conversion accuracy (decimal → hex → decimal):
 
 ### Performance Scaling
 
-How conversion time scales with input size and precision:
-
-| Input Size | 10 digits | 25 digits | 50 digits | 75 digits | 100 digits |
-|------------|-----------|-----------|-----------|-----------|------------|
-| 10 digits | 0.02ms | 0.03ms | 0.05ms | 0.06ms | 0.08ms |
-| 50 digits | 0.08ms | 0.09ms | 0.11ms | 0.12ms | 0.14ms |
-| 100 digits | 0.12ms | 0.13ms | 0.14ms | 0.17ms | 0.18ms |
-| 200 digits | 0.23ms | 0.33ms | 0.35ms | 0.36ms | 0.40ms |
+**Scaling Analysis**:
+- 25 digits: 1.63x slower (expected 2.5x for linear) - Efficiency: 153.5%
+- 50 digits: 1.86x slower (expected 5.0x for linear) - Efficiency: 268.8%
+- 75 digits: 3.19x slower (expected 7.5x for linear) - Efficiency: 235.0%
+- 100 digits: 2.71x slower (expected 10.0x for linear) - Efficiency: 369.0%
 
 ## Usage Recommendations
 
@@ -329,22 +303,22 @@ stress_octal = converter.decimal_to_octal("2.5e9", precision=40)
 
 ### Precision Guidelines
 
-- **1-10 digits**: General purpose, fastest performance
-- **11-25 digits**: Financial calculations, good balance
-- **26-50 digits**: Scientific computing, high accuracy
-- **51-75 digits**: Research applications, very high precision
-- **76-100 digits**: Maximum precision, specialized use cases
+- **1-10 digits**: General purpose, fastest performance (0.93ms)
+- **11-25 digits**: Financial calculations, good balance (1.52ms)
+- **26-50 digits**: Scientific computing, high accuracy (1.74ms)
+- **51-75 digits**: Research applications, very high precision (2.98ms)
+- **76-100 digits**: Maximum precision, specialized use cases (2.53ms)
 
 ### Performance Optimization Tips
 
 1. **Choose appropriate precision**: Don't use more precision than needed
-   - 5-10 digits: ~2x slower than float (still very fast)
-   - 20-30 digits: ~3-5x slower than float (acceptable for most use cases)
-   - 50+ digits: ~7x slower than float (worthwhile for accuracy-critical applications)
+   - 10 digits: ~0.93ms per conversion
+   - 25 digits: ~1.52ms per conversion  
+   - 50+ digits: ~1.74-2.98ms per conversion
 
 2. **Batch conversions**: Reuse converter instances for multiple operations
 3. **String inputs**: Use string inputs for very high precision numbers
-4. **Memory awareness**: Monitor memory usage for very large batch operations
+4. **Memory awareness**: Monitor memory scaling from 3.0KB to 7.0KB
 5. **Performance vs Accuracy trade-off**: 
    - Use lower precision for speed-critical applications
    - Use higher precision for accuracy-critical applications
@@ -416,7 +390,7 @@ The library provides comprehensive error handling:
 ### vs. Other Libraries
 
 - **Higher precision** than numpy (float64 limited to ~17 digits)
-- **Better memory efficiency** than float implementations (~57% less memory usage)
+- **Progressive memory scaling** from 3.0KB to 7.0KB with precision
 - **Scientific notation support** unlike most base conversion libraries
 - **More focused** than general math libraries
 - **Easier to use** than low-level bit manipulation
@@ -432,7 +406,7 @@ The library provides comprehensive error handling:
 | Fractional | No | Limited | Full support |
 | Scientific Notation | Basic | Yes | Full support |
 | Speed | Fast | Fast | Moderate (accuracy focus) |
-| Memory Efficiency | Standard | Standard | 57% better than float |
+| Memory Efficiency | Standard | Standard | Scales 3.0KB to 7.0KB |
 | Accuracy | Float limited | Float limited | Arbitrary precision |
 
 ## Benchmarking Methodology
@@ -441,7 +415,7 @@ All benchmarks were conducted with:
 
 - **Python**: 3.11.0
 - **Platform**: Windows 10
-- **Runs**: Multiple iterations for statistical accuracy
+- **Runs**: 50 iterations for statistical accuracy
 - **Memory**: Measured using tracemalloc
 - **Timing**: High-resolution performance counters
 
