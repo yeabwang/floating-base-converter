@@ -69,6 +69,110 @@ def convert_fractional(fraction_str, from_base, to_base, precision):
 3. **Early Termination**: Stop when fractional part becomes zero
 4. **Caching**: Reuse digit mapping arrays
 
+## Algorithm Complexity Analysis
+
+### Time Complexity
+
+#### Core Conversion Operations
+
+**Integer Part Conversion**: `O(log n)`
+- Converting integer part between bases uses Python's built-in functions (`int()`, `bin()`, `oct()`, `hex()`)
+- These operations have logarithmic complexity relative to the integer value
+- For an integer with `d` digits in base `b`, time complexity is `O(d)` = `O(log_b n)`
+
+**Fractional Part Conversion**: `O(p)`
+- Where `p` is the requested precision (1-100 digits)
+- Each iteration processes one output digit through Decimal arithmetic
+- Decimal multiplication and subtraction are constant time for our precision range
+- Total: `O(p)` iterations × `O(1)` per iteration = `O(p)`
+
+**Overall Conversion**: `O(log n + p)`
+- Integer conversion: `O(log n)` where `n` is the integer value
+- Fractional conversion: `O(p)` where `p` is precision
+- Input validation: `O(m)` where `m` is input string length
+- **Total: `O(log n + p + m)`**
+
+#### Scientific Notation Processing
+
+**Scientific Notation Parsing**: `O(1)`
+- Regular expression matching and Decimal conversion
+- Independent of input magnitude due to exponential representation
+
+**Scientific Notation Conversion**: `O(p)`
+- Same as regular decimal conversion once parsed
+- No additional complexity overhead
+
+#### Cross-Base Conversions
+
+**Non-Decimal to Non-Decimal**: `O(log n + p)`
+- All conversions go through decimal intermediate representation
+- Source → Decimal: `O(log n + p)`
+- Decimal → Target: `O(p)`
+- **Total: `O(log n + p)` (dominated by the larger term)**
+
+### Space Complexity
+
+#### Memory Usage Analysis
+
+**Input Storage**: `O(m)`
+- Where `m` is the length of input string
+- Stored once during validation and normalization
+
+**Decimal Arithmetic Context**: `O(p)`
+- Decimal precision context requires `O(p)` space
+- Where `p` is the precision level (1-100 digits)
+
+**Result Generation**: `O(p)`
+- Output string length is proportional to requested precision
+- Integer part: `O(log n)` where `n` is the integer value
+- Fractional part: `O(p)` where `p` is precision
+
+**Intermediate Calculations**: `O(p)`
+- Decimal arithmetic operations maintain `O(p)` working space
+- No recursive calls or significant auxiliary data structures
+
+**Overall Space Complexity**: `O(m + p + log n)`
+- Input string: `O(m)`
+- Precision context: `O(p)`
+- Integer part: `O(log n)`
+- **Practical: `O(p)` since `p ≤ 100` dominates for typical inputs**
+
+### Complexity Characteristics
+
+#### Best Case Performance
+- **Time**: `O(p)` - Small integers with requested precision
+- **Space**: `O(p)` - Constant overhead regardless of input
+
+#### Average Case Performance  
+- **Time**: `O(log n + p)` - Typical numbers with moderate precision
+- **Space**: `O(p)` - Dominated by precision requirements
+
+#### Worst Case Performance
+- **Time**: `O(log n + p)` - Large integers with maximum precision
+- **Space**: `O(p)` - Maximum precision (100 digits) + input storage
+
+#### Scalability Analysis
+
+**Precision Scaling**: Linear `O(p)`
+- Performance scales linearly with precision from 1-100 digits
+- Memory usage remains constant due to efficient Decimal implementation
+
+**Input Size Scaling**: Logarithmic `O(log n)`
+- Integer conversion complexity grows logarithmically with value
+- String input length handling is linear but typically small
+
+**Base Conversion Scaling**: Constant `O(1)`
+- No complexity difference between different bases (2, 8, 10, 16)
+- All conversions use the same algorithmic approach
+
+### Performance Optimizations
+
+1. **Decimal Context Management**: Automatically adjusts precision context
+2. **Early Termination**: Stops fractional conversion when remainder becomes zero
+3. **Efficient Digit Mapping**: Uses lookup tables for hexadecimal conversion
+4. **Memory Reuse**: Minimizes object allocation in tight loops
+5. **Built-in Function Leverage**: Uses optimized Python built-ins for integer conversion
+
 
 ## Performance Analysis
 
