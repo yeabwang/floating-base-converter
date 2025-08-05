@@ -1,8 +1,24 @@
+# Include important project files
 include README.md
 include LICENSE
 include CHANGELOG.md
-recursive-include tests *.py
+include pyproject.toml
+
+# Include source code
 recursive-include base_converter *.py
+recursive-include tests *.py
+
+# Include type information if present
+recursive-include base_converter py.typed
+recursive-include base_converter *.pyi
+
+# Exclude unnecessary files
 global-exclude *.pyc
 global-exclude __pycache__
 global-exclude .DS_Store
+global-exclude *.so
+global-exclude .git*
+global-exclude .pytest_cache
+global-exclude .mypy_cache
+global-exclude .coverage
+global-exclude htmlcov

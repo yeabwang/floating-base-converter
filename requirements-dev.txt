@@ -1,6 +1,10 @@
-pytest>=6.0
-pytest-cov>=2.0
-black>=21.0
-flake8>=3.8
-twine>=3.0
-wheel>=0.36
+# Development dependencies
+# Note: Consider using `pip install -e ".[dev]"` instead for pyproject.toml-based installs
+
+pytest>=7.0
+pytest-cov>=4.0
+black>=23.0
+flake8>=6.0
+mypy>=1.0
+twine>=4.0
+build>=0.10
