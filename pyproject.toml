@@ -1,7 +1,39 @@
 [project]
 name = "float-base-convertor"
 version = "0.1.0"
-description = "Add your description here"
+description = "A simple tool to use when you want to convert between bases containing floating points."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 88
+target-version = ['py37']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--cov=base_converter --cov-report=html --cov-report=term-missing"
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
