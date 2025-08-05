@@ -5,6 +5,9 @@ description = "A simple tool to use when you want to convert between bases conta
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []
+
+[project.scripts]
+base-converter = "base_converter.cli:main"
 [build-system]
 requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"

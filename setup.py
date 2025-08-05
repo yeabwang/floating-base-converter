@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="floating-base-converter",
-    version="1.0.0",
+    version="0.1.0",
     author="Yeabwang",
     author_email="wangxiayu@yeab.io",
     description="A Python package for converting floating-point numbers between different bases",
